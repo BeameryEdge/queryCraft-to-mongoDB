@@ -1,0 +1,73 @@
+{
+  "name": "querycraft-to-mongodb",
+  "version": "0.0.1",
+  "description": "Data query abstraction layer",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "directories": {
+    "lib": "lib",
+    "test": "test"
+  },
+  "scripts": {
+    "prebuild": "npm run test",
+    "build": "tsc",
+    "start": "mocha --watch lib/*.* --watch-extensions ts --bail",
+    "serve:cov": "http-server -p 8001 coverage/",
+    "test": "nyc mocha --reporter mocha-junit-reporter",
+    "test:cov": "nyc npm test",
+    "posttest:cov": "nyc report"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/BeameryHQ/QueryCraft-To-MongoDB.git"
+  },
+  "author": "Dayo Adeyemi",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/BeameryHQ/QueryCraft-To-MongoDB/issues"
+  },
+  "homepage": "https://github.com/BeameryHQ/QueryCraft-To-MongoDB#readme",
+  "devDependencies": {
+    "@types/chai": "^4.0.4",
+    "@types/debug": "0.0.30",
+    "@types/mocha": "^2.2.44",
+    "@types/mongodb": "^2.2.16",
+    "@types/node": "^8.0.54",
+    "@types/ramda": "^0.25.6",
+    "chai": "^4.1.2",
+    "http-server": "^0.10.0",
+    "mocha": "^4.0.1",
+    "mocha-junit-reporter": "^1.15.0",
+    "moment": "^2.19.3",
+    "mongodb": "^2.2.33",
+    "nyc": "^11.3.0",
+    "querycraft": "^0.0.16",
+    "querycraft-to-function": "^0.0.13",
+    "source-map-support": "^0.5.0",
+    "ts-node": "^3.3.0",
+    "typescript": "^2.6.1"
+  },
+  "nyc": {
+    "extension": [
+      ".ts"
+    ],
+    "require": [
+      "ts-node/register"
+    ],
+    "include": [
+      "lib/**/*.ts"
+    ],
+    "exclude": [
+      "**/*.test.ts",
+      "**/*.d.ts"
+    ],
+    "reporter": [
+      "lcov"
+    ],
+    "all": true
+  },
+  "peerDependencies": {
+    "querycraft": "^0.0.16"
+  },
+  "dependencies": {}
+}

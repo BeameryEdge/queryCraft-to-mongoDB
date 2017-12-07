@@ -59,4 +59,4 @@ typings/
 
 # artifacts
 test-results.xml
-dist
+lib/

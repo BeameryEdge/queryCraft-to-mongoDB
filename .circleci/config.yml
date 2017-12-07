@@ -1,0 +1,89 @@
+# Javascript Node CircleCI 2.0 configuration file
+#
+# Check https://circleci.com/docs/2.0/language-javascript/ for more details
+#
+version: 2
+jobs:
+  install:
+    docker:
+      - image: circleci/node:6.10.3
+    working_directory: ~/repo
+    steps:
+      - checkout
+      - restore_cache:
+          key: dependency-cache-{{ checksum "package.json" }}
+      - run:
+          name: Install npm wee
+          command: npm install
+      - save_cache:
+          key: dependency-cache-{{ checksum "package.json" }}
+          paths:
+            - node_modules
+
+  test:
+    docker:
+      - image: circleci/node:6.10.3
+      - image: mongo
+    working_directory: ~/repo
+    steps:
+      - checkout
+      - restore_cache:
+          key: dependency-cache-{{ checksum "package.json" }}
+      - run:
+          name: Test
+          command: npm test
+          environment:
+            MOCHA_FILE: $CIRCLE_TEST_REPORTS/junit/test-results.xml
+            DEBUG: querycraft*
+      - run:
+          name: Generate code coverage
+          command: './node_modules/.bin/nyc report --reporter=text-lcov'
+      - store_artifacts:
+          path: $CIRCLE_TEST_REPORTS/junit
+          prefix: tests
+      - store_artifacts:
+          path: coverage
+          prefix: coverage
+      - store_test_results:
+          path: $CIRCLE_TEST_REPORTS/junit
+      - run:
+          name: Update codecov.io
+          command: bash <(curl -s https://codecov.io/bash)
+
+  deploy:
+    docker:
+      - image: circleci/node:6.10.3
+    working_directory: ~/repo
+    steps:
+      - checkout
+      - restore_cache:
+          key: dependency-cache-{{ checksum "package.json" }}
+      - run:
+          name: Update ~/.npmrc
+          command: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" >> ~/.npmrc
+      - run:
+          name: Build dist
+          command: npm run build
+      - run:
+          name: Publish to NPM
+          command: npm publish
+
+workflows:
+  version: 2
+  build_and_test:
+    jobs:
+      - install:
+          filters:
+            tags:
+              only: /^v[0-9]+(\.[0-9]+)*$/
+      - test:
+          requires:
+            - install
+      - deploy:
+          requires:
+            - test
+          filters:
+            branches:
+              ignore: /.*/
+            tags:
+              only: /^v[0-9]+(\.[0-9]+)*$/
