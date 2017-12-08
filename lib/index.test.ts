@@ -326,6 +326,6 @@ describe('toMongo',function(){
     })
 
     after('cleanup mongodb test index', function(){
-        return collection.drop()
+        collection.drop()
     })
 })
