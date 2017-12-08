@@ -1,5 +1,4 @@
 import { FilterBuilder, QueryBuilder, Condition, OrderCondition } from 'querycraft'
-import { mergeDeep } from './util'
 
 /**
  * Converts an OrderCondition into an mongodb range condition
