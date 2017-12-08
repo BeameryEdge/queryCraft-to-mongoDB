@@ -5,7 +5,7 @@ import toMongo from '.'
 import {FilterBuilder, all, any, eq, find, gt, gte, lt, lte, neq, nfind, prefix, where} from 'querycraft'
 import { times, pluck, prop } from 'ramda'
 import * as moment from 'moment'
-import { MongoClient, Collection } from 'mongodb'
+import { MongoClient, Collection, Db } from 'mongodb'
 import { testContacts, Contact } from '../test/testContacts'
 import * as Debug from 'debug'
 
@@ -19,6 +19,7 @@ const wait = (delay: number) => new Promise(resolve => setTimeout(resolve, 1000)
 function getIds<T extends { id: string }>(list: T[]){
     return list.map(({ id }) => id)
 }
+
 
 describe('toMongo',function(){
     const myFilter = new FilterBuilder()
@@ -36,6 +37,7 @@ describe('toMongo',function(){
             .or()
             .where('vacancies.id', eq('vacancy1'))
 
+    let db: Db
     let collection: Collection;
     let fieldIdMapFn = (fieldId: string) => {
         switch (fieldId) {
@@ -68,7 +70,7 @@ describe('toMongo',function(){
 
     before('Connect to mongodb client and set data', async function(){
         this.timeout(60000)
-        const db = await MongoClient.connect('mongodb://localhost:27017/'+testDbName)
+        db = await MongoClient.connect('mongodb://localhost:27017/'+testDbName)
 
         collection = db.collection(testCollectionName)
 
@@ -325,7 +327,8 @@ describe('toMongo',function(){
         assert.deepEqual(getIds(hits), getIds(expected))
     })
 
-    after('cleanup mongodb test index', function(){
-        collection.drop()
+    after('cleanup mongodb test index', async function(){
+        await collection.drop()
+        await db.close()
     })
 })
