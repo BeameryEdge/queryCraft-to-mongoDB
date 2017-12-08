@@ -9,7 +9,6 @@
     "test": "test"
   },
   "scripts": {
-    "prebuild": "npm run test",
     "build": "tsc",
     "start": "mocha --watch lib/*.* --watch-extensions ts --bail",
     "serve:cov": "http-server -p 8001 coverage/",
