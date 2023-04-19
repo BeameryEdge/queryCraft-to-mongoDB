@@ -1,11 +1,9 @@
 # QueryCraft-To-MongoDB
 Converts a [QueryCraft](https://github.com/BeameryHQ/QueryCraft) Filter Builder object into a function to filter arrays of objects.
 
-
 [![NPM](https://nodei.co/npm/querycraft-to-mongodb.png)](https://npmjs.org/package/querycraft-to-mongodb)
 
 [![npm version](https://badge.fury.io/js/querycraft-to-mongodb.svg)](https://badge.fury.io/js/querycraft-to-mongodb)
-[![CircleCI](https://circleci.com/gh/BeameryHQ/QueryCraft-To-MongoDB.svg?style=shield)](https://circleci.com/gh/BeameryHQ/QueryCraft-To-MongoDB)
 [![codecov](https://codecov.io/gh/BeameryHQ/QueryCraft-To-MongoDB/branch/master/graph/badge.svg)](https://codecov.io/gh/BeameryHQ/QueryCraft-To-MongoDB)
 [![David deps](https://david-dm.org/BeameryHQ/QueryCraft-To-MongoDB.svg)](https://david-dm.org/BeameryHQ/QueryCraft-To-MongoDB)
 [![Known Vulnerabilities](https://snyk.io/test/github/beameryhq/querycraft-to-mongodb/badge.svg)](https://snyk.io/test/github/beameryhq/querycraft-to-mongodb)
